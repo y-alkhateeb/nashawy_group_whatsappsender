@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>
+        Excel file upload and processing
+    </title>
+</head>
+<body style="margin-top: 30px;margin-left: 30px;">
+<div>
+    <form action="{% url "whatsapp:index" %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if user.is_authenticated %}
+            <p style="margin-left: 40%; color: blue;font-size: 20pt">Welcome Mr. {{ user.username }} </p>
+        {% endif %}
+        <p>If you want to upload new contact please choose an Exel file </p>
+        <input type="file"
+               title="Upload excel file"
+               name="excel_file"
+               accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+               style="border: 1px solid black; padding: 5px;"
+               required="required">
+        <p>
+            <input type="submit"
+                   value="Upload new contact"
+                   style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
+    </form>
+
+    <p></p>
+    {% if excel_data >= 0 %}
+        <p>Contacts in Exel file: {{ excel_data }}</p>
+    {% endif %}
+    <p>Contacts in dataBase: {{ all_phones }}</p>
+    <p>Contacts who have Whatsapp: {{ all_phones_have_whatsapp }}</p>
+    <hr>
+
+{% if all_phones  != 0 %}
+    <table style="width: 100%">
+    <tr>
+        <th>
+            <p>Clear data base</p>
+        </th>
+        <th>
+            <p>send message to all contacts number in DataBase</p>
+        </th>
+        <th>
+           <p>Try to send message to my contacts who don't have a WhatsApp</p>
+        </th>
+    </tr>
+    <tr>
+        <th>
+             <form action="{% url "whatsapp:index" %}" method="post">
+        {% csrf_token %}
+        <input
+                type="submit"
+                value="submit" ,
+                name="clear_database"
+                style="border: 2px solid red; padding:5px; border-radius: 5px; cursor: pointer;">
+    </form>
+        </th>
+        <th>
+            <form action="{% url "whatsapp:index" %}" method="post">
+        {% csrf_token %}
+        <input
+                type="submit"
+                value="submit" ,
+                name="s_m_all_number_db"
+                style="border: 2px solid green; padding:5px; border-radius: 5px; cursor: pointer;">
+    </form>
+        </th>
+        <th>
+             <form action="{% url "whatsapp:index" %}" method="post">
+        {% csrf_token %}
+        <input
+                type="submit"
+                value="submit" ,
+                name="s_m_doesnot_have_wapp_db"
+                style="border: 2px solid green; padding:5px; border-radius: 5px; cursor: pointer;">
+    </form>
+        </th>
+    </tr>
+
+    <tr>
+        <th>
+            <p>send message to all contacts have Whatsapp in DataBase</p>
+        </th>
+        <th>
+            <p>Extract contacts from DataBase who have Whatsapp</p>
+        </th>
+        <th>
+           <p>Extract contacts from DataBase who haven't Whatsapp</p>
+        </th>
+    </tr>
+    <tr>
+        <th>
+             <form action="{% url "whatsapp:index" %}" method="post">
+        {% csrf_token %}
+        <input
+                type="submit"
+                value="submit" ,
+                name="s_m_does_have_wapp_db"
+                style="border: 2px solid green; padding:5px; border-radius: 5px; cursor: pointer;">
+    </form>
+        </th>
+        <th>
+            <form action="{% url "whatsapp:index" %}" method="post">
+        {% csrf_token %}
+        <input
+                type="submit"
+                value="submit" ,
+                name="s_m_all_number_db"
+                style="border: 2px solid green; padding:5px; border-radius: 5px; cursor: pointer;">
+    </form>
+        </th>
+        <th>
+             <form action="{% url "whatsapp:index" %}" method="post">
+        {% csrf_token %}
+        <input
+                type="submit"
+                value="submit" ,
+                name="s_m_doesnot_have_wapp_db"
+                style="border: 2px solid green; padding:5px; border-radius: 5px; cursor: pointer;">
+    </form>
+        </th>
+    </tr>
+</table>
+{% endif %}
+
+</div>
+</body>
+</html>
