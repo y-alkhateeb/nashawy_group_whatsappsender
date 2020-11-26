@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
 </head>
-<body >
+<body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -24,8 +24,8 @@
         <a class="nav-link" href="{% url "whatsapp:index" %}">Home </a>
       </li>
         {% if all_phones  != 0 %}
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url "whatsapp:send" %}">Send to all <span class="sr-only">(current)</span></a>
+      <li class="nav-item ">
+        <a class="nav-link" href="{% url "whatsapp:send" %}">Send to all </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url "whatsapp:sendHaveWhat" %}">Send to active Whatsapp</a>
@@ -33,8 +33,8 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url "whatsapp:sendDontHaveWhat" %}">Send to non active Whatsapp</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url "whatsapp:sendToSpecificNumber" %}">Send to costume phone</a>
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url "whatsapp:sendToSpecificNumber" %}">Send to costume phone <span class="sr-only">(current)</span></a>
       </li>
         {% endif %}
       <li class="nav-item dropdown">
@@ -54,12 +54,22 @@
   </div>
 </nav>
     <div class="p-1 m-1">
-        <h4 class="text-md-center text-info">We found {{ all_phone_numbers }} phone numbers in DataBase please enter a message
-            and
-            select an image to send them message on whatsapp.</h4>
+        <h4 class="text-md-center text-info">Send Whatsapp message to specific number please make sure add ", " to the end of each number.</h4>
         <div class="col-lg-4 mx-auto border border-info rounded p-3 m-3">
-            <form action="{% url "whatsapp:send" %}" method="post" enctype="multipart/form-data">
+            <form action="{% url "whatsapp:sendToSpecificNumber" %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
+                <div class="form-group">
+                    <label class="align-text-bottom" for="specific_numbers">Write Phone numbers:</label>
+                    <textarea
+                            type="text"
+                            id="specific_numbers"
+                            name="specific_numbers"
+                            maxlength="700"
+                            cols="40"
+                            rows="5"
+                            placeholder="961xxxxxxxxx , 961xxxxxxxxx"
+                            required="required"></textarea>
+                </div>
                 <div class="form-group">
                     <label class="align-text-bottom" for="message">Type a Message: </label>
                     <textarea
@@ -90,26 +100,7 @@
                             value="20"
                             required="required"/>
                 </div>
-                <div class="form-group">
-                <div class="form-control-sm col-md-4">
-                    <label for="start_from">Start from: </label>
-                    <input
-                            type="number"
-                            id="start_from"
-                            name="start_from"
-                            value={{ start_from }}
-                            required="required"/>
-                </div>
-                <div class="form-control-sm col-md-4">
-                    <label for="end_to">End to: </label>
-                    <input
-                            type="number"
-                            id="end_to"
-                            name="end_to"
-                            value={{ all_phone_numbers }}
-                            required="required"/>
-                </div>
-                </div>
+                <br/>
                 <div>
                     <button
                             class="btn btn-sm btn-info col-lg-12"

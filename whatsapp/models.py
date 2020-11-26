@@ -19,3 +19,12 @@ class SystemSetting(models.Model):
 
     def __str__(self):
         return str(self.last_index_sent) + " - " + self.last_phone_number + " - " + str(self.last_date_of_sent)
+
+
+class SystemReporting(models.Model):
+    total_success_sent = models.IntegerField(default=0)
+    total_failure_sent = models.IntegerField(default=0)
+    date_of_reporting = models.DateTimeField()
+
+    def __str__(self):
+        return str(self.total_success_sent) + " - " + str(self.total_failure_sent) + " - " + str(self.date_of_reporting)

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Whatsapp sender report</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    {% if user.is_authenticated %}
+           <a class="navbar-brand text-primary" href="{% url "whatsapp:index" %}">{{ user.username }}</a>
+    {% endif %}
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url "whatsapp:index" %}">Home </a>
+      </li>
+        {% if all_phones  != 0 %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url "whatsapp:send" %}">Send to all</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url "whatsapp:sendHaveWhat" %}">Send to active Whatsapp</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url "whatsapp:sendDontHaveWhat" %}">Send to non active Whatsapp</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url "whatsapp:sendToSpecificNumber" %}">Send to costume phone</a>
+      </li>
+        {% endif %}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Profile
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <a class="dropdown-item" href="/admin">Admin</a>
+            {% if all_phones  != 0 %}
+          <a class="dropdown-item text-danger" href="{% url "whatsapp:deleteAllDataBase" %}">Clear DataBase</a>
+            <hr/>
+              {% endif %}
+          <a class="dropdown-item" href="/admin/logout/">Logout</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+    <div class="p-1 m-1">
+        <div class="col-lg-8 mx-auto border border-info rounded p-3 m-3">
+            <h3 class="text-lg-center text-primary">Your Whatsapp messages have been sent.</h3>
+            <br/>
+            <br/>
+            <br/>
+            <div class="row">
+                <div class="col-sm">
+                    <p class="text-justify text-primary">Total phone numbers:</p>
+                </div>
+                <div class="col-sm">
+                    <p class="text-justify text-primary">{{ phone_number }}</p>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-sm">
+                    <p class="text-justify text-success">Total messages have been sent successfully:</p>
+                </div>
+                <div class="col-sm">
+                    <p class="text-justify text-success">{{ all_phone_sent }}</p>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-sm">
+                    <p class="text-justify text-danger">Total messages that failed to be sent:</p>
+                </div>
+                <div class="col-sm">
+                    <p class="text-justify text-danger">{{ all_phone_failed_sent }}</p>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <div class="text-lg-center">
+                <form action="{% url "whatsapp:index" %}" method="get">
+                <button id="back_to_home" name="back_to_home" type="submit" class="btn btn-outline-primary">Back to home</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
