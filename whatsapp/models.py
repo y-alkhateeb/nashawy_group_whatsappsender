@@ -1,7 +1,15 @@
 from django.db import models
 
 
+class PhoneNumberGroup(models.Model):
+    group_name = models.CharField(max_length=50, default="")
+
+    def __str__(self):
+        return str(self.id) + ' : ' + self.group_name
+
+
 class DrPhoneNumber(models.Model):
+    group = models.ForeignKey(PhoneNumberGroup, on_delete=models.CASCADE)
     phone_number = models.CharField(primary_key=True, max_length=15)
     number_of_message_sent = models.IntegerField(default=0)
     have_whatsapp = models.BooleanField()

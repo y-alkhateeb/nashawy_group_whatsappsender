@@ -2,8 +2,8 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib.admin import AdminSite
-
-from .models import DrPhoneNumber, SystemSetting, SystemReporting
+from django.contrib.auth.models import User
+from .models import DrPhoneNumber, SystemSetting, SystemReporting, PhoneNumberGroup
 
 
 class MyAdminSite(AdminSite):
@@ -11,8 +11,8 @@ class MyAdminSite(AdminSite):
 
 
 class DrPhoneNumberAdmin(admin.ModelAdmin):
-    list_display = ('phone_number', 'number_of_message_sent', 'have_whatsapp', 'note')
-    list_filter = ('number_of_message_sent', 'have_whatsapp')
+    list_display = ('phone_number', 'number_of_message_sent', 'have_whatsapp', 'group', 'note')
+    list_filter = ('group_id', 'number_of_message_sent', 'have_whatsapp')
     search_fields = ('phone_number', 'number_of_message_sent')
 
 
@@ -29,3 +29,5 @@ admin_site = MyAdminSite(name='admin')
 admin_site.register(DrPhoneNumber, DrPhoneNumberAdmin)
 admin_site.register(SystemSetting, SystemSettingAdmin)
 admin_site.register(SystemReporting, SystemReportingAdmin)
+admin_site.register(PhoneNumberGroup)
+admin_site.register(User)

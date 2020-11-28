@@ -10,6 +10,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#blah')
+                    .attr('src', e.target.result)
+                    .width(200)
+                    .height(200);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
     {% if user.is_authenticated %}
@@ -23,7 +39,6 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url "whatsapp:index" %}">Home </a>
       </li>
-        {% if all_phones  != 0 %}
       <li class="nav-item ">
         <a class="nav-link" href="{% url "whatsapp:send" %}">Send to all </a>
       </li>
@@ -36,7 +51,6 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url "whatsapp:sendToSpecificNumber" %}">Send to costume phone</a>
       </li>
-        {% endif %}
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Profile
@@ -71,15 +85,25 @@
                             rows="5"
                             required="required"></textarea>
                 </div>
+                <label for="phone_number_group">Choose a group:  </label>
+                <select name="phone_number_group" id="phone_number_group" required="required">
+                    {% for g in phone_number_group %}
+                    <option value="{{ g.id }}">{{ g.group_name }}</option>
+                    {% endfor %}
+                </select>
                 <div class="form-group">
                     <label for="image">Select an image: </label>
                     <input type="file"
                            title="Upload an image"
                            id="image"
+                           onchange="readURL(this);"
                            accept="image/*"
                            name="image"
                            style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
                            required="required">
+                </div>
+                <div class="form-group">
+                    <img id="blah" src="nashawy.jpg" />
                 </div>
                 <div class="form-control-sm col-md-4">
                     <label for="timer">Timer: </label>

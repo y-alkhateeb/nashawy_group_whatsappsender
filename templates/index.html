@@ -23,20 +23,18 @@
       <li class="nav-item active">
         <a class="nav-link" href="{% url "whatsapp:index" %}">Home <span class="sr-only">(current)</span></a>
       </li>
-        {% if all_phones  != 0 %}
       <li class="nav-item">
         <a class="nav-link" href="{% url "whatsapp:send" %}">Send to all</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url "whatsapp:sendHaveWhat" %}">Send to active Whatsapp</a>
       </li>
-      <li class="nav-item">
+      {% comment %}<li class="nav-item">
         <a class="nav-link" href="{% url "whatsapp:sendDontHaveWhat" %}">Send to non active Whatsapp</a>
-      </li>
+      </li>{% endcomment %}
       <li class="nav-item">
         <a class="nav-link" href="{% url "whatsapp:sendToSpecificNumber" %}">Send to costume phone</a>
       </li>
-        {% endif %}
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Profile
