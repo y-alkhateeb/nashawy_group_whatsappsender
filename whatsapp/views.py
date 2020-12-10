@@ -122,6 +122,8 @@ def send(request):
                 single_phone = phone.get(phone_number=phone[i].phone_number)
                 driver.get('https://web.whatsapp.com/send?phone=' + single_phone.phone_number + '&text=' + message)
                 time.sleep(int(timer))
+                while not is_element_present(driver, "div", "class", "_1awRl copyable-text selectable-text"):
+                    time.sleep(2)
                 start_or_stop = driver.find_element_by_xpath(
                     '//div[@class="_1awRl copyable-text selectable-text"]').text
                 if "stop" in start_or_stop:
@@ -289,6 +291,8 @@ def sendHaveWhat(request):
                 single_phone = phone.get(phone_number=phone[i].phone_number)
                 driver.get('https://web.whatsapp.com/send?phone=' + single_phone.phone_number + '&text=' + message)
                 time.sleep(int(timer))
+                while not is_element_present(driver, "div", "class", "_1awRl copyable-text selectable-text"):
+                    time.sleep(2)
                 start_or_stop = driver.find_element_by_xpath(
                     '//div[@class="_1awRl copyable-text selectable-text"]').text
                 if "stop" in start_or_stop:
@@ -601,6 +605,8 @@ def sendToSpecificNumber(request):
                         time.sleep(5)
                 driver.get('https://web.whatsapp.com/send?phone=' + str(i) + '&text=' + message)
                 time.sleep(int(timer))
+                while not is_element_present(driver, "div", "class", "_1awRl copyable-text selectable-text"):
+                    time.sleep(2)
                 start_or_stop = driver.find_element_by_xpath(
                     '//div[@class="_1awRl copyable-text selectable-text"]').text
                 if "stop" in start_or_stop:
