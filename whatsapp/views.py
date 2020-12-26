@@ -124,30 +124,35 @@ def send(request):
                             '//div[@class="_1awRl copyable-text selectable-text"]').text:
                         time.sleep(5)
                 single_phone = phone.get(phone_number=phone[i].phone_number)
+                print(single_phone.phone_number)
                 # find new chat icon and click it
-                while not is_element_present(driver, "span", "data-testid", "chat"):
-                    driver.get('https://web.whatsapp.com/')
-                    time.sleep(15)
-                new_chat = driver.find_element_by_xpath('//span[@data-testid="chat"]')
-                new_chat.click()
-                sleep(1)
-                new_chat_search_input = driver.find_element_by_xpath('//div[@class="_1awRl copyable-text selectable-text"]')
-                new_chat_search_input.send_keys(str(single_phone.phone_number))
-                sleep(2)
-                if not is_element_present(driver, "div", "class", "_1ivy5"):
-                    print("find here")
-                    chat_selected = driver.find_element_by_xpath('//div[@class = "_1C6Zl"]')
-                    chat_selected.click()
-                    sleep(2)
-                    send_test_chat = driver.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div[2]/div/div[2]')
-                    send_test_chat.send_keys(".")
-                else:
-                    driver.get('https://web.whatsapp.com/send?phone=' + str(single_phone.phone_number) + '&text=' + ".")
-                    time.sleep(5)
+                script = f"""const link = document.createElement("a");
+                            link.setAttribute("href", `whatsapp://send?phone={str(single_phone.phone_number)}`);
+                            document.body.append(link);
+                            link.click();
+                            document.body.removeChild(link);"""
+                driver.execute_script(script)
+                # while not is_element_present(driver, "span", "data-testid", "chat"):
+                #     driver.get('https://web.whatsapp.com/')
+                #     time.sleep(15)
+                # new_chat = driver.find_element_by_xpath('//span[@data-testid="chat"]')
+                # new_chat.click()
+                # sleep(1)
+                # new_chat_search_input = driver.find_element_by_xpath(
+                #     '//div[@class="_1awRl copyable-text selectable-text"]')
+                # new_chat_search_input.send_keys(str(single_phone.phone_number))
+                # sleep(2)
+                # if not is_element_present(driver, "div", "class", "_1ivy5"):
+                #     print("find here")
+                #     chat_selected = driver.find_element_by_xpath('//div[@class = "_1C6Zl"]')
+                #     chat_selected.click()
+                #     sleep(2)
+                #     send_test_chat = driver.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div[2]/div/div[2]')
+                #     send_test_chat.send_keys(".")
+                # else:
+                #     driver.get('https://web.whatsapp.com/send?phone=' + str(single_phone.phone_number) + '&text=' + ".")
+                #     time.sleep(5)
                 time.sleep(int(timer))
-                while not is_element_present(driver, "div", "class", "_1awRl copyable-text selectable-text"):
-                    print("_1awRl copyable-text selectable-text")
-                    time.sleep(2)
                 start_or_stop = driver.find_element_by_xpath(
                     '//div[@class="_1awRl copyable-text selectable-text"]').text
                 if "stop" in start_or_stop:
@@ -157,17 +162,22 @@ def send(request):
                             '//div[@class="_1awRl copyable-text selectable-text"]').text:
                         time.sleep(5)
                 # this mean this phone number don't have whatsapp
-                if not is_element_present(driver, "div", "id", "main"):
+                if is_element_present(driver, "div", "class", "_30EVj gMRg5"):
+                    # phone number not valid
+                    # if is_element_present(driver, "div", "class", "_30EVj gMRg5"):
+                    phone_not_valid = driver.find_element_by_xpath('//div[@class="_30EVj gMRg5"]')
+                    phone_not_valid.click()
+                    single_phone.have_whatsapp = False
+                    single_phone.save()
+                    # user = driver.find_element_by_xpath('//div[@role = "button"]')
+                    # user.click()
+                    all_phone_failed_sent.append(single_phone.phone_number)
                     # this mean bot can't parse this page
-                    if not is_element_present(driver, "div", "role", "button"):
-                        pass
-                    else:
-                        single_phone.have_whatsapp = False
-                        single_phone.save()
-                        user = driver.find_element_by_xpath('//div[@role = "button"]')
-                        user.click()
-                        all_phone_failed_sent.append(single_phone.phone_number)
+                    # if not is_element_present(driver, "div", "role", "button"):
+                    #     pass
                 else:
+                    send_test_chat = driver.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div[2]/div/div[2]')
+                    send_test_chat.send_keys(".")
                     # here we add new line by java script
                     msg = driver.find_element_by_xpath('//*[@id="main"]/footer/div[1]/div[2]/div/div[2]')
                     driver.execute_script("arguments[0].innerText=arguments[1];", msg, message_with_newline)
